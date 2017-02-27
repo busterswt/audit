@@ -1,0 +1,97 @@
+{
+  "devices": [
+    {
+      "hostfix": "Hotfix HF10", 
+      "hostname": "lb-XXXXXX.IAD3.XXXXXX.COM", 
+      "management_ip": "192.168.114.11", 
+      "mirror_ip": "None", 
+      "model": "BIG-IP 2200", 
+      "version": "11.5.1"
+    }
+  ], 
+  "virtuals": [
+    {
+      "mirroring": "disabled", 
+      "name": "RPC_VS_GALERA", 
+      "pool": "/RPC/RPC_POOL_GALERA"
+    }
+  ], 
+  "vlans": [
+    {
+      "addresses": [
+        {
+          "address": "172.24.96.3/22", 
+          "floating": "enabled", 
+          "fullPath": "/Common/172.24.96.3"
+        }, 
+        {
+          "address": "172.24.96.192/22", 
+          "floating": "disabled", 
+          "fullPath": "/Common/172.24.96.192"
+        }
+      ], 
+      "failsafe": "disabled", 
+      "failsafeAction": "failover-restart-tm", 
+      "fullPath": "/Common/FW-LB", 
+      "name": "FW-LB", 
+      "tag": 1242
+    }, 
+    {
+      "addresses": [
+        {
+          "address": "172.29.236.1/22", 
+          "floating": "enabled", 
+          "fullPath": "/Common/172.29.236.1"
+        }, 
+        {
+          "address": "172.29.236.2/22", 
+          "floating": "disabled", 
+          "fullPath": "/Common/172.29.236.2"
+        }
+      ], 
+      "failsafe": "disabled", 
+      "failsafeAction": "failover-restart-tm", 
+      "fullPath": "/Common/RPC_CONTAINER", 
+      "name": "RPC_CONTAINER", 
+      "tag": 1246
+    }, 
+    {
+      "addresses": [
+        {
+          "address": "10.239.0.1/22", 
+          "floating": "enabled", 
+          "fullPath": "/Common/10.239.0.1"
+        }, 
+        {
+          "address": "10.239.0.2/22", 
+          "floating": "disabled", 
+          "fullPath": "/Common/10.239.0.2"
+        }
+      ], 
+      "failsafe": "disabled", 
+      "failsafeAction": "failover-restart-tm", 
+      "fullPath": "/Common/RPC_GATEWAY_NET", 
+      "name": "RPC_GATEWAY_NET", 
+      "tag": 1243
+    }, 
+    {
+      "addresses": [
+        {
+          "address": "10.240.0.1/22", 
+          "floating": "enabled", 
+          "fullPath": "/Common/10.240.0.1"
+        }, 
+        {
+          "address": "10.240.0.2/22", 
+          "floating": "disabled", 
+          "fullPath": "/Common/10.240.0.2"
+        }
+      ], 
+      "failsafe": "disabled", 
+      "failsafeAction": "failover-restart-tm", 
+      "fullPath": "/Common/RPC_HOST_NET", 
+      "name": "RPC_HOST_NET", 
+      "tag": 1240
+    }
+  ]
+}

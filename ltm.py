@@ -22,6 +22,10 @@ class LTM:
         resp = self.bigip.get('%s/net/vlan' % (self.url_base))
         return json.loads(resp.text)
 
+    def get_selfips(self):
+        resp = self.bigip.get('%s/net/self' % (self.url_base))
+        return json.loads(resp.text)
+
     def get_device_details(self, device):
         resp = self.bigip.get('%s/cm/device/%s' % (self.url_base, device))
         return json.loads(resp.text) 
