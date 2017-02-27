@@ -4,9 +4,7 @@ import requests
 import json
 import getpass
 import sys
-import prettytable
 from ltm import LTM
-from prettytable import PrettyTable
 
 ip = raw_input("MGMT IP: ")
 username = raw_input("Tacacs Username: ")
