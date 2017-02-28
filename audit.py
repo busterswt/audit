@@ -48,11 +48,10 @@ def audit_device(ltm):
     # Check to see if any virtual servers are returned
     if vslist.has_key('items'):
         for vs in vslist['items']:
-            string1 = 'GALERA'
-            string2 = vs['name']
-            if string1.lower() in string2.lower():
-                virtdetails = { "name": vs['name'], "pool": vs['pool'], "mirroring": vs['mirror'] }
-                details['virtuals'].append(virtdetails)
+            pool = ltm.get_pool(vs['pool'])
+
+            virtdetails = { "name": vs['name'], "pool": vs['pool'], "loadBalancingMode": pool['loadBalancingMode'], "mirroring": vs['mirror'] }
+            details['virtuals'].append(virtdetails)
 
     # 3. Return VLAN details (look for failsafe)
     details['vlans'] = []
@@ -61,12 +60,7 @@ def audit_device(ltm):
 
     # Check to see if any vlans are returned
     if vlanlist.has_key('items'):
-       	for vlan in vlanlist['items']:
-#            string1 = 'RPC_'
-#            string2 = vlan['name']
-#            if string1.lower() in string2.lower():
-#                vlandetails = { "name": vlan['name'], "tag": vlan['tag'], "failsafe": vlan['failsafe'], "failsafeAction": vlan['failsafeAction'] }
-#                details['vlans'].append(vlandetails)
+        for vlan in vlanlist['items']:
 
             # Find the respective self ip for each vlan
             addresses = []

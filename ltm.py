@@ -16,7 +16,7 @@ class LTM:
 
     def get_devices(self):
         resp = self.bigip.get('%s/cm/device' % (self.url_base))
-       	return json.loads(resp.text)
+        return json.loads(resp.text)
 
     def get_vlans(self):
         resp = self.bigip.get('%s/net/vlan' % (self.url_base))
@@ -40,6 +40,10 @@ class LTM:
 
     def get_pool_members(self, pool):
         resp = self.bigip.get('%s/ltm/pool/~%s~%s/members' % (self.url_base, self.partition, pool))
+        return json.loads(resp.text)
+
+    def get_pool(self, pool):
+        resp = self.bigip.get('%s/ltm/pool/~%s~%s' % (self.url_base, self.partition, pool))
         return json.loads(resp.text)
 
     def get_virtuals(self):
