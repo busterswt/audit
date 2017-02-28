@@ -16,7 +16,7 @@ class LTM:
 
     def get_devices(self):
         resp = self.bigip.get('%s/cm/device' % (self.url_base))
-        return json.loads(resp.text)
+       	return json.loads(resp.text)
 
     def get_vlans(self):
         resp = self.bigip.get('%s/net/vlan' % (self.url_base))
@@ -28,7 +28,7 @@ class LTM:
 
     def get_device_details(self, device):
         resp = self.bigip.get('%s/cm/device/%s' % (self.url_base, device))
-        return json.loads(resp.text) 
+        return json.loads(resp.text)
 
     def get_pools(self):
         resp = self.bigip.get('%s/ltm/pool?$filter=partition eq %s' % (self.url_base, self.partition))
@@ -141,7 +141,7 @@ class LTM:
         # Logic to see if member is forced offline
         if force_offline:
             payload = { 'state':'user-down','session': 'user-disabled' }
-        else:        
+        else:
             payload = { 'state':'user-up','session':'user-disabled' }
         resp = self.bigip.put('%s/ltm/pool/~%s~%s/members/~%s~%s' % (self.url_base, self.partition, pool, self.partition, member), data=json.dumps(payload))
         return resp.status_code, json.loads(resp.text)
@@ -160,4 +160,3 @@ class LTM:
         resp = self.bigip.get('%s/cm/traffic-group/stats' % self.url_base)
         return resp.status_code, json.loads(resp.text)
 #        return resp.status_code, resp.json()
-

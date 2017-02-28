@@ -35,7 +35,7 @@ def audit_device(ltm):
             # Check for the existence of particular keys
             if not device.has_key('mirror-ip'):
                 device['mirror-ip'] = "None"
-            
+
             devdetails = { "hostname": device['hostname'], "model": device['marketingName'],
                            "version": device['version'], "hostfix": device['edition'],
                            "management_ip": device['managementIp'], "mirror_ip": device['mirror-ip'] }
@@ -48,7 +48,11 @@ def audit_device(ltm):
     # Check to see if any virtual servers are returned
     if vslist.has_key('items'):
         for vs in vslist['items']:
-            pool = ltm.get_pool(vs['pool'])
+            if vs.has_key('pool'):
+                pool = ltm.get_pool(vs['pool'].rsplit('/', 1)[-1])
+            else:
+                vs['pool'] = 'N/A'
+                pool = { "loadBalancingMode": "N/A" }
 
             virtdetails = { "name": vs['name'], "pool": vs['pool'], "loadBalancingMode": pool['loadBalancingMode'], "mirroring": vs['mirror'] }
             details['virtuals'].append(virtdetails)
@@ -69,7 +73,7 @@ def audit_device(ltm):
                     addrdetails = { "address": selfip['address'], "floating": selfip['floating'], "fullPath": selfip['fullPath'] }
                     addresses.append(addrdetails)
 
-            vlandetails = { "name": vlan['name'], "fullPath": vlan['fullPath'], "tag": vlan['tag'], 
+            vlandetails = { "name": vlan['name'], "fullPath": vlan['fullPath'], "tag": vlan['tag'],
                             "failsafe": vlan['failsafe'], "failsafeAction": vlan['failsafeAction'],
                             "addresses": addresses }
             details['vlans'].append(vlandetails)
