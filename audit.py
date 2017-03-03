@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
-import requests
 import json
 import getpass
-import sys
 from ltm import LTM
+import argparse
 
-ip = raw_input("MGMT IP: ")
-username = raw_input("Tacacs Username: ")
-password = getpass.getpass("Tacacs Password: ")
 
-url = 'https://%s' % ip
-payload = { "password": password }
+#ip = raw_input("MGMT IP: ")
+#username = raw_input("Tacacs Username: ")
+#password = getpass.getpass("Tacacs Password: ")
+#
+#url = 'https://%s' % ip
+#payload = { "password": password }
 headers = { "User-Agent": "Mozilla/5.0 (RPC-N Audit)" }
 
 
@@ -82,6 +82,15 @@ def audit_device(ltm):
     return details
 
 if __name__ == "__main__":
-    ltm = LTM(hostname=ip, username=username, password=password, partition='RPC')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--host', help='F5 hostname or IP', required=True)
+    parser.add_argument('--username', help='TACACS or local username', required=True)
+    args = vars(parser.parse_args())
+
+    # Prompt the user for their password
+    # Prompt the user for their password
+    password = getpass.getpass("Password: ")
+
+    ltm = LTM(hostname=args['host'], username=args['username'], password=password, partition='RPC')
 
     print json.dumps(audit_device(ltm))
