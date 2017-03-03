@@ -107,7 +107,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', help='F5 hostname or IP', required=True)
     parser.add_argument('--username', help='TACACS or local username', required=True)
-    parser.add_argument('-r','--remediate', help='Provide guidance on changes',type=bool)
+    parser.add_argument('-r','--remediate', help='Provide guidance on changes', action='store_true')
     args = vars(parser.parse_args())
 
     # Prompt the user for their password
