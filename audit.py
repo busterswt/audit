@@ -81,10 +81,33 @@ def audit_device(ltm):
     # Return!
     return details
 
+def remidiate_device(audit):
+    print 'Remidiating!'
+    if audit.has_key('vlans'):
+        print 'Checking VLANs...'
+        check_vlans(audit['vlans'])
+
+def check_vlans(vlans):
+    # Check VLANs to ensure failsafe is set
+    for vlan in vlans:
+        string1 = 'RPC_'
+        string2 = vlan['name']
+
+        if string1.lower() in string2.lower():
+        # Check for failsafe
+            failsafe = vlan['failsafe']
+            failsafeAction = vlan['failsafeAction']
+
+            if 'enable' not in failsafe:
+                print "tmsh modify net vlan %s failsafe enabled failsafe-action failover" % (vlan['fullPath'])
+
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', help='F5 hostname or IP', required=True)
     parser.add_argument('--username', help='TACACS or local username', required=True)
+    parser.add_argument('-r','--remediate', help='Provide guidance on changes',type=bool)
     args = vars(parser.parse_args())
 
     # Prompt the user for their password
@@ -93,4 +116,10 @@ if __name__ == "__main__":
 
     ltm = LTM(hostname=args['host'], username=args['username'], password=password, partition='RPC')
 
-    print json.dumps(audit_device(ltm))
+    audit = json.dumps(audit_device(ltm))
+
+    if args.has_key('remidiate'):
+        if args['remidiate']:
+            print remidiate_device(audit)
+    else:
+        print audit
